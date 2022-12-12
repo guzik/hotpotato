@@ -24,7 +24,7 @@ input.onButtonPressed(Button.B, function () {
             stan = 4
             timer = randint(10, 20)
             next = indeks
-            basic.showIcon(IconNames.Yes)
+            basic.showIcon(IconNames.Pitchfork)
         } else {
             stan = 5
             radio.sendValue("rejestracja", indeks)
@@ -91,3 +91,4 @@ lista_tekstowa = [
 timer = 0
 indeks = 0
 ilosc_graczy = 1
+stan = 0
