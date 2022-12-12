@@ -1,5 +1,5 @@
 input.onButtonPressed(Button.A, function () {
-    if (start == 0) {
+    if (stan == 0) {
         if (indeks == lista_tekstowa.length - 1) {
             indeks = 1
         } else {
@@ -9,57 +9,69 @@ input.onButtonPressed(Button.A, function () {
     }
 })
 input.onButtonPressed(Button.AB, function () {
-    if (start == 4) {
-        timer = randint(10, 20)
+    if (stan == 4) {
         while (next == indeks) {
-            next = randint(1, lista_tekstowa.length - 1)
+            next = randint(1, ilosc_graczy)
         }
+        radio.sendValue("ilosc_graczy", ilosc_graczy)
         basic.showIcon(IconNames.Happy)
-        start = 2
+        stan = 2
     }
 })
 input.onButtonPressed(Button.B, function () {
-    if (start == 0 && indeks != 0) {
+    if (stan == 0 && indeks != 0) {
         if (indeks == 1) {
-            start = 4
+            stan = 4
+            timer = randint(10, 20)
             next = indeks
             basic.showIcon(IconNames.Yes)
         } else {
-            start = 1
-            basic.showIcon(IconNames.Happy)
+            stan = 5
+            radio.sendValue("rejestracja", indeks)
+            basic.showIcon(IconNames.Yes)
         }
     }
 })
 radio.onReceivedValue(function (name, value) {
-    if (start == 1) {
+    if (stan == 1) {
         if (name == lista_tekstowa[indeks]) {
             if (value == 0) {
                 basic.showIcon(IconNames.Skull)
-                start = 3
+                music.playSoundEffect(music.createSoundEffect(WaveShape.Noise, 775, 1444, 255, 255, 500, SoundExpressionEffect.None, InterpolationCurve.Linear), SoundExpressionPlayMode.UntilDone)
+                stan = 3
             } else {
                 music.playSoundEffect(music.createSoundEffect(WaveShape.Sine, 5000, 0, 255, 0, 500, SoundExpressionEffect.None, InterpolationCurve.Linear), SoundExpressionPlayMode.InBackground)
                 basic.showNumber(value)
-                basic.pause(500)
                 basic.showIcon(IconNames.Yes)
                 timer = value - 1
                 next = indeks
                 while (next == indeks) {
-                    next = randint(1, lista_tekstowa.length - 1)
+                    next = randint(1, ilosc_graczy)
                 }
-                start = 2
+                stan = 2
             }
+        }
+    } else if (stan == 4) {
+        music.playSoundEffect(music.createSoundEffect(WaveShape.Noise, 5000, 0, 255, 0, 500, SoundExpressionEffect.None, InterpolationCurve.Linear), SoundExpressionPlayMode.InBackground)
+        ilosc_graczy += 1
+    } else {
+        if (stan == 5) {
+            ilosc_graczy = value
+            stan = 1
+            basic.showIcon(IconNames.Happy)
         }
     }
 })
 input.onGesture(Gesture.Shake, function () {
-    if (start == 2) {
-        start = 1
+    if (stan == 2) {
+        stan = 1
         radio.sendValue(lista_tekstowa[next], timer)
         basic.showIcon(IconNames.Heart)
     }
 })
 let next = 0
-let start = 0
+let stan = 0
+let ilosc_graczy = 0
 let indeks = 0
 let timer = 0
 let lista_tekstowa: string[] = []
@@ -70,7 +82,12 @@ lista_tekstowa = [
 "a",
 "b",
 "c",
-"d"
+"d",
+"e",
+"f",
+"g",
+"h"
 ]
 timer = 0
 indeks = 0
+ilosc_graczy = 1
